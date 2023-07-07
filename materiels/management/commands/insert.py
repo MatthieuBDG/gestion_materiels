@@ -89,16 +89,4 @@ class Command(BaseCommand):
                     accessoire = Accessoire.objects.create(nom=accessoire_name)
                     materiel.accessoires.add(accessoire)
 
-        # Exemple de création d'un nouvel objet ChangementPossesseur avec une date valide
-        changement_possesseur = ChangementPossesseur.objects.create(
-            materiel_id='3',
-            ancien_possesseur_id='2',
-            nouveau_possesseur_id='3',
-            date=date.today(),  # Utilise la date actuelle comme exemple
-            lieu='Toulouse',
-            occasion='Bon',
-            objectif_utilisation='Cours'
-
-        )
-
         self.stdout.write(self.style.SUCCESS('Données insérées avec succès.'))

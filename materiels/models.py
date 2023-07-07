@@ -59,9 +59,3 @@ class Accessoire(models.Model):
 
     def __str__(self):
         return self.nom
-
-class Etat(models.Model):
-    libelle = models.CharField(max_length=20)
-
-    def __str__(self):
-        return self.libelle

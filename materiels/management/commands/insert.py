@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from materiels.models import Enseignant, Salle, Materiel, Accessoire,ChangementPossesseur
+from materiels.models import Enseignant, Salle, Materiel, Accessoire, ChangementPossesseur
 from datetime import date
 
 
@@ -7,7 +7,6 @@ class Command(BaseCommand):
     help = 'Insérer des données dans la base de données'
 
     def handle(self, *args, **kwargs):
-
 
         # Insérer les enseignants
         enseignants = ['Pierre Dubois', 'Philippe Durand', 'Thierry Dupré', 'Sophie Dupuy']
@@ -24,10 +23,12 @@ class Command(BaseCommand):
         materiels = [
             {'nom': 'smartphone', 'budget_annuel': 500.00, 'budget_projets': 0.00,
              'budget_financements_exceptionnels': 0.00, 'acheteur': 'Pierre Dubois', 'mandant': None,
-             'proprietaire': 'Pierre Dubois', 'possesseur': 'Philippe Durand', 'salle': '001'},
+             'proprietaire': 'Pierre Dubois', 'possesseur': None, 'salle': '001',
+             'accessoires': ['Chargeur', 'Câble USB']},
             {'nom': 'smartphone', 'budget_annuel': 500.00, 'budget_projets': 0.00,
              'budget_financements_exceptionnels': 0.00, 'acheteur': 'Pierre Dubois', 'mandant': None,
-             'proprietaire': 'Pierre Dubois', 'possesseur': 'Philippe Durand', 'salle': '104'},
+             'proprietaire': 'Pierre Dubois', 'possesseur': 'Philippe Durand', 'salle': '104',
+             'accessoires': ['Chargeur', 'Câble USB']},
             {'nom': 'tablette', 'budget_annuel': 800.00, 'budget_projets': 0.00,
              'budget_financements_exceptionnels': 0.00, 'acheteur': 'Philippe Durand', 'mandant': None,
              'proprietaire': 'Pierre Dubois', 'possesseur': 'Thierry Dupré', 'salle': '101',
@@ -42,7 +43,7 @@ class Command(BaseCommand):
              'accessoires': ['Câble d’alimentation', 'Câble HDMI']},
             {'nom': 'écran', 'budget_annuel': 1000.00, 'budget_projets': 0.00,
              'budget_financements_exceptionnels': 0.00, 'acheteur': None, 'mandant': 'Philippe Durand',
-             'proprietaire': 'Thierry Dupré', 'possesseur': 'Philippe Durand', 'salle': '301',
+             'proprietaire': 'Thierry Dupré', 'possesseur': None, 'salle': '001',
              'accessoires': ['Câble d’alimentation', 'Câble HDMI']},
             {'nom': 'vidéo-projecteur', 'budget_annuel': 1500.00, 'budget_projets': 0.00,
              'budget_financements_exceptionnels': 0.00, 'acheteur': None, 'mandant': 'Philippe Durand',
@@ -54,7 +55,7 @@ class Command(BaseCommand):
              'accessoires': ['Câble d’alimentation', 'Câble HDMI']},
             {'nom': 'vidéo-projecteur', 'budget_annuel': 1500.00, 'budget_projets': 0.00,
              'budget_financements_exceptionnels': 0.00, 'acheteur': None, 'mandant': 'Philippe Durand',
-             'proprietaire': 'Sophie Dupuy', 'possesseur': 'Philippe Durand', 'salle': '301',
+             'proprietaire': 'Sophie Dupuy', 'possesseur': None, 'salle': '001',
              'accessoires': ['Câble d’alimentation', 'Câble HDMI']},
             {'nom': 'pointeur laser', 'budget_annuel': 50.00, 'budget_projets': 0.00,
              'budget_financements_exceptionnels': 0.00, 'acheteur': 'Pierre Dubois', 'mandant': None,
@@ -71,7 +72,7 @@ class Command(BaseCommand):
             acheteur = Enseignant.objects.get(nom=m['acheteur']) if m['acheteur'] else None
             mandant = Enseignant.objects.get(nom=m['mandant']) if m['mandant'] else None
             proprietaire = Enseignant.objects.get(nom=m['proprietaire'])
-            possesseur = Enseignant.objects.get(nom=m['possesseur'])
+            possesseur = Enseignant.objects.get(nom=m['possesseur']) if m['possesseur'] else None
 
             salle = Salle.objects.get(numero=m['salle'])
 
@@ -87,6 +88,7 @@ class Command(BaseCommand):
                 for accessoire_name in m.get('accessoires', []):
                     accessoire = Accessoire.objects.create(nom=accessoire_name)
                     materiel.accessoires.add(accessoire)
+
         # Exemple de création d'un nouvel objet ChangementPossesseur avec une date valide
         changement_possesseur = ChangementPossesseur.objects.create(
             materiel_id='3',
@@ -98,4 +100,5 @@ class Command(BaseCommand):
             objectif_utilisation='Cours'
 
         )
+
         self.stdout.write(self.style.SUCCESS('Données insérées avec succès.'))

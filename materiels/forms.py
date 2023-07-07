@@ -35,7 +35,7 @@ class EmpruntForm(forms.ModelForm):
         widget=forms.Select(attrs={'class': 'form-control'}),
     )
     accessoires_presents = forms.ChoiceField(
-        label='Accessoires Présents ',
+        label='Accessoires présents ',
         choices=[('True', 'Oui'), ('False', 'Non')],
         widget=forms.Select(attrs={'class': 'form-control'}),
         required=False,
@@ -56,9 +56,8 @@ class EmpruntForm(forms.ModelForm):
 
 
 class SalleForm(forms.ModelForm):
-    numero = forms.DecimalField(
-        max_digits=3,
-        decimal_places=3,
+    numero = forms.CharField(
+        max_length=3,
         label='Numero ',
 
         widget=forms.TextInput(attrs={'class': 'form-control'})
@@ -84,7 +83,7 @@ class EnseignantForm(forms.ModelForm):
 class AccessoireForm(forms.ModelForm):
     nom = forms.CharField(
         max_length=100,
-        label='Nom',
+        label='Nom ',
 
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
@@ -95,58 +94,58 @@ class AccessoireForm(forms.ModelForm):
 class MaterielForm(forms.ModelForm):
     nom = forms.CharField(
         max_length=100,
-        label='Nom',
+        label='Nom ',
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
     budget_annuel = forms.DecimalField(
         max_digits=10,
         decimal_places=2,
-        label='Budget annuel',
+        label='Budget annuel ',
         widget=forms.NumberInput(attrs={'class': 'form-control'})
     )
     budget_projets = forms.DecimalField(
         max_digits=10,
         decimal_places=2,
-        label='Budget projets',
+        label='Budget projets ',
         widget=forms.NumberInput(attrs={'class': 'form-control'})
     )
     budget_financements_exceptionnels = forms.DecimalField(
         max_digits=10,
         decimal_places=2,
-        label='Budget financements exceptionnels',
+        label='Budget financements exceptionnels ',
         widget=forms.NumberInput(attrs={'class': 'form-control'})
     )
     acheteur = forms.ModelChoiceField(
         queryset=Enseignant.objects.all(),
-        label='Acheteur',
+        label='Acheteur ',
         widget=forms.Select(attrs={'class': 'form-control'}),
         required=False
     )
     mandant = forms.ModelChoiceField(
         queryset=Enseignant.objects.all(),
-        label='Mandant',
+        label='Mandant ',
         widget=forms.Select(attrs={'class': 'form-control'}),
         required=False
     )
     proprietaire = forms.ModelChoiceField(
         queryset=Enseignant.objects.all(),
-        label='Propriétaire',
+        label='Propriétaire ',
         widget=forms.Select(attrs={'class': 'form-control'})
     )
     salle = forms.ModelChoiceField(
         queryset=Salle.objects.all(),
-        label='Salle',
+        label='Salle ',
         widget=forms.Select(attrs={'class': 'form-control'})
     )
     possesseur = forms.ModelChoiceField(
         queryset=Enseignant.objects.all(),
-        label='Possesseur',
+        label='Possesseur ',
         widget=forms.Select(attrs={'class': 'form-control'}),
         required=False
     )
     accessoires = forms.ModelMultipleChoiceField(
         queryset=Accessoire.objects.all(),
-        label='Accessoires',
+        label='Accessoires ',
         widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
         required=False
     )

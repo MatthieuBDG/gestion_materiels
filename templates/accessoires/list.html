@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Liste des enseignants{% endblock %}
+
+{% block content %}
+    <h1 class="d-flex justify-content-between align-items-center">Liste des accessoires
+        <form method="GET" action="{% url 'accessoires' %}" class="form-inline">
+            <input type="text" name="q" value="{{ query|default_if_none:'' }}" class="form-control ml-3"
+                   placeholder="Rechercher...">
+            <button type="submit" class="btn btn-primary ml-2">Rechercher</button>
+        </form>
+    </h1>
+    <a class="btn btn-primary m-3" href="{% url 'ajouter_accessoire' %}">Ajouter un accessoire</a>
+    {% if accessoires %}
+        <table class="table table-bordered  table-hover">
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Etat</th>
+                <th>Modifier & Supprimer</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for accessoire in accessoires %}
+                <tr>
+                    <td>{{ accessoire.nom }}</td>
+                    <td>
+                                {% if accessoire.etat == 'Très Mauvais' %}
+                                    <span class="badge badge-danger">{{ accessoire.etat }}</span>
+                                {% elif accessoire.etat == 'Mauvais' %}
+                                    <span class="badge badge-warning">{{ accessoire.etat }}</span>
+                                {% elif accessoire.etat == 'Correct' %}
+                                    <span class="badge badge-secondary">{{ accessoire.etat }}</span>
+                                {% elif accessoire.etat == 'Bon' %}
+                                    <span class="badge badge-info">{{ accessoire.etat }}</span>
+                                {% elif accessoire.etat == 'Neuf' %}
+                                    <span class="badge badge-success">{{ accessoire.etat }}</span>
+                                {% endif %}
+                    </td>
+                    <td style="display: flex">
+                        <a class="btn btn-warning" href="{% url 'modifier_accessoire' accessoire.id %}">Modifier</a>
+                        <a class="btn btn-danger ml-2"
+                           href="{% url 'supprimer_accessoire' accessoire.id %}">Supprimer</a>
+                    </td>
+                </tr>
+
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            Aucun accessoire dans la base de données
+        </div>
+    {% endif %}
+{% endblock %}

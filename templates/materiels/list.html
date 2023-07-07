@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Liste des matériels{% endblock %}
+
+{% block content %}
+    <h1 class="d-flex justify-content-between align-items-center">Liste des matériels
+        <form method="GET" action="{% url 'materiels' %}" class="form-inline">
+            <input type="text" name="q" value="{{ query|default_if_none:'' }}" class="form-control ml-3"
+                   placeholder="Rechercher...">
+            <button type="submit" class="btn btn-primary ml-2">Rechercher</button>
+        </form>
+    </h1>
+    <a class="btn btn-primary m-3" href="{% url 'ajouter_materiel' %}">Ajouter un matériel</a>
+    {% if materiels %}
+        <table class="table table-bordered  table-hover">
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Budget Annuel</th>
+                <th>Budget Financements Exceptionnels</th>
+                <th>Budget Projets</th>
+                <th>Acheteur/Mandant</th>
+                <th>Possesseur</th>
+                <th>Proprietaire</th>
+                <th>Salle</th>
+                <th>Accessoires</th>
+                <th>Modifier & Supprimer</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for materiel in materiels %}
+                <tr>
+                    <td>{{ materiel.nom }}</td>
+                    <td>{{ materiel.budget_annuel }}€</td>
+                    <td>{{ materiel.budget_financements_exceptionnels }}€</td>
+                    <td>{{ materiel.budget_projets }}€</td>
+                    <td>{{ materiel.acheteur.nom }}{{ materiel.mandant.nom }}</td>
+                    <td>{{ materiel.possesseur.nom }}</td>
+                    <td>{{ materiel.proprietaire.nom }}</td>
+                    <td>{{ materiel.salle.numero }}</td>
+                    <td>
+                        <ul>
+                            {% for accessoire in materiel.accessoires.all %}
+                                <li>
+                                    {{ accessoire.nom }}
+                                    {% if accessoire.etat == 'Très Mauvais' %}
+                                        <span class="badge badge-danger">{{ accessoire.etat }}</span>
+                                    {% elif accessoire.etat == 'Mauvais' %}
+                                        <span class="badge badge-warning">{{ accessoire.etat }}</span>
+                                    {% elif accessoire.etat == 'Correct' %}
+                                        <span class="badge badge-secondary">{{ accessoire.etat }}</span>
+                                    {% elif accessoire.etat == 'Bon' %}
+                                        <span class="badge badge-info">{{ accessoire.etat }}</span>
+                                    {% elif accessoire.etat == 'Neuf' %}
+                                        <span class="badge badge-success">{{ accessoire.etat }}</span>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td style="display: flex">
+                        <a class="btn btn-warning" href="{% url 'modifier_materiel' materiel.id %}">Modifier</a>
+                        <a class="btn btn-danger ml-2" href="{% url 'supprimer_materiel' materiel.id %}">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            Aucun matériel dans la base de données
+        </div>
+    {% endif %}
+{% endblock %}

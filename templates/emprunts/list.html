@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Liste des emprunts{% endblock %}
+
+{% block content %}
+    <h1 class="d-flex justify-content-between align-items-center">Liste des emprunts
+        <form method="GET" action="{% url 'emprunts' %}" class="form-inline">
+            <input type="text" name="q" value="{{ query|default_if_none:'' }}" class="form-control ml-3"
+                   placeholder="Rechercher...">
+            <button type="submit" class="btn btn-primary ml-2">Rechercher</button>
+        </form>
+    </h1>
+    <a class="btn btn-primary m-3" href="{% url 'ajouter_emprunt' %}">Ajouter un emprunt</a>
+    {% if emprunts %}
+        <table class="table table-bordered  table-hover">
+            <thead>
+            <tr>
+                <th>Matériel</th>
+                <th>Ancien possesseur</th>
+                <th>Nouveau possesseur</th>
+                <th>Date</th>
+                <th>Lieu</th>
+                <th>Occasion</th>
+                <th>Objectif d'utilisation</th>
+                <th>Accessoires présents</th>
+                <th>État des accessoires</th>
+                <th>Modifier & Supprimer</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for emprunt in emprunts %}
+                <tr>
+                    <td>{{ emprunt.materiel.nom }}</td>
+                    <td>{{ emprunt.ancien_possesseur.nom }}</td>
+                    <td>{{ emprunt.nouveau_possesseur.nom }}</td>
+                    <td>{{ emprunt.date|date:"d/m/Y" }}</td>
+                    <td>{{ emprunt.lieu }}</td>
+                    <td>{{ emprunt.occasion }}</td>
+                    <td>{{ emprunt.objectif_utilisation }}</td>
+                    <td>{% if emprunt.accessoires_presents %}Oui{% else %}Non{% endif %}</td>
+                    {% if emprunt.etat %}
+                                    <td>
+                                {% if emprunt.etat == 'Très Mauvais' %}
+                                    <span class="badge badge-danger">{{ emprunt.etat }}</span>
+                                {% elif emprunt.etat == 'Mauvais' %}
+                                    <span class="badge badge-warning">{{ emprunt.etat }}</span>
+                                {% elif emprunt.etat == 'Correct' %}
+                                    <span class="badge badge-secondary">{{ emprunt.etat }}</span>
+                                {% elif emprunt.etat == 'Bon' %}
+                                    <span class="badge badge-info">{{ emprunt.etat }}</span>
+                                {% elif emprunt.etat == 'Neuf' %}
+                                    <span class="badge badge-success">{{ emprunt.etat }}</span>
+                                {% endif %}
+                    {% endif %}
+                    </td>
+                    <td style="display: flex">
+                        <a class="btn btn-warning" href="{% url 'modifier_emprunt' emprunt.id %}">Modifier</a>
+                        <a class="btn btn-danger ml-2" href="{% url 'supprimer_emprunt' emprunt.id %}">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            Aucun emprunt dans la base de données
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Liste des salles{% endblock %}
+
+{% block content %}
+ <h1 class="d-flex justify-content-between align-items-center">Liste des salles
+        <form method="GET" action="{% url 'salles' %}" class="form-inline">
+            <input type="text" name="q" value="{{ query|default_if_none:'' }}" class="form-control ml-3" placeholder="Rechercher...">
+            <button type="submit" class="btn btn-primary ml-2">Rechercher</button>
+        </form>
+    </h1>
+    <a class="btn btn-primary m-3" href="{% url 'ajouter_salle' %}">Ajouter une salle</a>
+    {% if salles %}
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>Numero</th>
+                <th>Modifier & Supprimer</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for salle in salles %}
+                <tr>
+                    <td>{{ salle.numero }}</td>
+                    <td>
+                        <a class="btn btn-warning" href="{% url 'modifier_salle' salle.id %}">Modifier</a>
+                        <a class="btn btn-danger" href="{% url 'supprimer_salle' salle.id %}">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            Aucune salle dans la base de données
+        </div>
+    {% endif %}
+{% endblock %}

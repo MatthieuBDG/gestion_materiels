@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Supprimer l'accessoire {{ accessoire.nom }} {% endblock %}
+{% block content %}
+  <h2>Supprimer l'accessoire</h2>
+  <p>Êtes-vous sûr de vouloir supprimer l'accessoire "{{ accessoire.nom }}" ?</p>
+
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Supprimer</button>
+    <a class="btn btn-primary" href="{% url 'accessoires' %}">Annuler</a>
+  </form>
+{% endblock %}

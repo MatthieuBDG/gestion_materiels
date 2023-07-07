@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Liste des enseignants{% endblock %}
+
+{% block content %}
+    <h1 class="d-flex justify-content-between align-items-center">Liste des enseignants
+        <form method="GET" action="{% url 'enseignants' %}" class="form-inline">
+            <input type="text" name="q" value="{{ query|default_if_none:'' }}" class="form-control ml-3"
+                   placeholder="Rechercher...">
+            <button type="submit" class="btn btn-primary ml-2">Rechercher</button>
+        </form>
+    </h1>
+    <a class="btn btn-primary m-3" href="{% url 'ajouter_enseignant' %}">Ajouter un enseignant</a>
+    {% if enseignants %}
+        <table class="table table-bordered  table-hover">
+            <thead>
+            <tr>
+                <th>Nom & Prenom</th>
+                <th>Modifier & Supprimer</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for enseignant in enseignants %}
+                <tr>
+                    <td>{{ enseignant.nom }}</td>
+                    <td style="display: flex">
+                        <a class="btn btn-warning" href="{% url 'modifier_enseignant' enseignant.id %}">Modifier</a>
+                        <a class="btn btn-danger ml-2"
+                           href="{% url 'supprimer_enseignant' enseignant.id %}">Supprimer</a>
+                    </td>
+                </tr>
+
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            Aucun enseignant dans la base de données
+        </div>
+    {% endif %}
+{% endblock %}
